@@ -5,6 +5,7 @@ import com.example.photoappusersservice.repository.UserRepository;
 import com.example.photoappusersservice.shared.UserDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,12 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(entity);
 
         return modelMapper.map(savedUser, UserDto.class);
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String username) {
+        User user = userRepository.findByEmail(username);
+        if (user == null) throw new UsernameNotFoundException(username);
+        return new ModelMapper().map(user, UserDto.class);
     }
 }

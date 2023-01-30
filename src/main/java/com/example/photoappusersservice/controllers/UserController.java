@@ -39,4 +39,9 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(returnValue);
     }
+
+    @GetMapping("/user")
+    public String testAuthenticated() {
+        return "user authenticated";
+    }
 }
