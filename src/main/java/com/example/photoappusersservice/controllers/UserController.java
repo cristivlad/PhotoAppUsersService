@@ -2,6 +2,7 @@ package com.example.photoappusersservice.controllers;
 
 import com.example.photoappusersservice.model.CreateUserRequestModel;
 import com.example.photoappusersservice.model.CreateUserResponseModel;
+import com.example.photoappusersservice.model.UserResponseModel;
 import com.example.photoappusersservice.service.UserService;
 import com.example.photoappusersservice.shared.UserDto;
 import jakarta.validation.Valid;
@@ -11,6 +12,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/users")
@@ -43,5 +46,13 @@ public class UserController {
     @GetMapping("/user")
     public String testAuthenticated() {
         return "user authenticated";
+    }
+
+    @GetMapping("/{userId")
+    public ResponseEntity<UserResponseModel> getUser(@PathVariable("userId") String userId) {
+
+        UserDto userDto = userService.getUserByUserId(userId);
+        UserResponseModel returnValue = new ModelMapper().map(userDto, UserResponseModel.class);
+        return ok().body(returnValue);
     }
 }
