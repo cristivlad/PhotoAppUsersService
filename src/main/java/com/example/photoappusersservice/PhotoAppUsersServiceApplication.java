@@ -1,5 +1,6 @@
 package com.example.photoappusersservice;
 
+import com.example.photoappusersservice.shared.FeignErrorDecoder;
 import feign.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,5 +30,10 @@ public class PhotoAppUsersServiceApplication {
     @Bean
     Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
+    }
+
+    @Bean
+    public FeignErrorDecoder getFeignErrorDecoder() {
+        return new FeignErrorDecoder();
     }
 }
