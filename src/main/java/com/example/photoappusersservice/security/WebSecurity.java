@@ -18,6 +18,7 @@ public class WebSecurity {
 
         return http.authorizeHttpRequests(authorizeConfig -> {
                     authorizeConfig.requestMatchers("/users/user").authenticated();
+                    authorizeConfig.requestMatchers("/actuator/**").permitAll();
                     authorizeConfig.requestMatchers("/users/**").permitAll();
                     authorizeConfig.requestMatchers("/login").permitAll();
         })
