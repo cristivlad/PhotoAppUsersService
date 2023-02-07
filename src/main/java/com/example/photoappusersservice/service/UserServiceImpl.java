@@ -7,6 +7,8 @@ import com.example.photoappusersservice.repository.UserRepository;
 import com.example.photoappusersservice.shared.UserDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +20,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+
 public class UserServiceImpl implements UserService {
+    private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AlbumServiceClient albumServiceClient;
@@ -56,7 +60,9 @@ public class UserServiceImpl implements UserService {
         if (user == null) throw new UsernameNotFoundException(userId);
 
         UserDto userDto = new ModelMapper().map(user, UserDto.class);
+        log.info("Before calling albums microservice");
         List<AlbumResponseModel> albumsList = albumServiceClient.getAlbums(userId);
+        log.info("After calling albums microservice");
         userDto.setAlbums(albumsList);
         return userDto;
     }
