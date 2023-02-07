@@ -2,6 +2,7 @@ package com.example.photoappusersservice.client;
 
 import com.example.photoappusersservice.model.AlbumResponseModel;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ public interface AlbumServiceClient {
 
     @GetMapping("/users/{id}/albums")
     @CircuitBreaker(name = "albums-service", fallbackMethod = "getAlbumsFallback")
+    @Retry(name = "albums-service")
     List<AlbumResponseModel> getAlbums(@PathVariable String id);
 
     default List<AlbumResponseModel> getAlbumsFallback(String id, Throwable exc) {
